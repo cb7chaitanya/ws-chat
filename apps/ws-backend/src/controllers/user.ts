@@ -1,9 +1,9 @@
-import jwt from 'jsonwebtoken'
+import jwt, { Secret } from 'jsonwebtoken'
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import prisma from '../db'
 import { signupSchema, signinSchema } from '../zod'
-import conf from '../conf.ts'
+import conf from '../conf'
 
 const register = async (req: Request, res: Response) => {
     const { username, password, email } = req.body
@@ -32,7 +32,7 @@ const register = async (req: Request, res: Response) => {
                 password: hashedPassword
             }
         })
-        const token = jwt.sign({ id: user.id }, conf.JWT_SECRET)
+        const token = jwt.sign({ id: user.id }, conf.JWT_SECRET as Secret)
         res.cookie('auth-token', token)
         return res.status(201).json({
             msg: "User created successfully"
@@ -69,7 +69,7 @@ const login = async (req: Request, res: Response) => {
                 msg: "Incorrect password"
             })
         }
-        const token = jwt.sign({ id: isExisting.id }, conf.JWT_SECRET)
+        const token = jwt.sign({ id: isExisting.id }, conf.JWT_SECRET as Secret)
         res.cookie('auth-token', token)
         return res.status(200).json({
             msg: "User logged in successfully"
@@ -80,3 +80,13 @@ const login = async (req: Request, res: Response) => {
         })   
     }
 }
+
+const logout = async (req: Request, res: Response) => {
+    res.clearCookie('auth-token')
+    return res.status(200).json({
+        msg: "User logged out successfully"
+    })
+}
+
+
+export { register, login, logout }
