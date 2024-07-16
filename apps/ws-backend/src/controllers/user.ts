@@ -16,7 +16,7 @@ const register = async (req: Request, res: Response) => {
         }
         const isExisting = await prisma.user.findUnique({
             where: {
-                email: email
+                username: username
             }
         })
         if(isExisting){
@@ -28,7 +28,6 @@ const register = async (req: Request, res: Response) => {
         const user = await prisma.user.create({
             data: {
                 username,
-                email,
                 password: hashedPassword
             }
         })

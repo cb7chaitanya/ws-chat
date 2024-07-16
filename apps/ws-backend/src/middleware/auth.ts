@@ -1,13 +1,12 @@
 import  conf from '../conf'
 import jwt, { JwtPayload, Secret } from 'jsonwebtoken'
-import { Response, NextFunction } from 'express'
-import { request } from '../interfaces/extends'
+import { Response, NextFunction, Request } from 'express'
 
 interface authMiddleware {
-    (req: request, res: Response, next: NextFunction): void
+    (req: Request, res: Response, next: NextFunction): void
 }
 
-export const authMiddleware: any = (req: request, res: Response, next: NextFunction) => {
+export const authMiddleware: any = (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies['auth-token']
     if(!token) {
         return res.status(401).json({
