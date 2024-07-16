@@ -1,6 +1,15 @@
+import { Routes, BrowserRouter, Route } from "react-router-dom";
+import Landing from "./pages/Landing";
+
 const App = () => {
   return (
-    <div className='flex flex-col h-screen justify-center items-center text-2xl'>Hello World!!!</div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   )
 }
 
